@@ -14,10 +14,14 @@ class App extends React.Component {
     super(props);
     this.state = {
       videos: [],
+      selectedVideo: null
     };
 
     YTSearch({key: API_KEY, term: 'brush lettering'}, (data) => {
-      this.setState({ videos: data });
+      this.setState({
+        videos: data,
+        selectedVideo: data[0]
+      });
     });
   }
 
@@ -25,8 +29,10 @@ class App extends React.Component {
     return (
       <div className='app-wrapper'>
         <SearchBar/>
-        <VideoDetail video={this.state.videos[0]}/>
-        <VideoList videos={this.state.videos} />
+        <VideoDetail video={this.state.selectedVideo}/>
+        <VideoList
+          onVideoSelect={ (selectedVideo) => {this.setState({selectedVideo})} }
+          videos={this.state.videos} />
       </div>
     );
   };
