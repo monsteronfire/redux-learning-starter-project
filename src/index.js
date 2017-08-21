@@ -19,6 +19,7 @@ class App extends React.Component {
     };
 
     this.videoSearch('brush lettering');
+    this.select = this.select.bind(this);
   }
 
   videoSearch(term) {
@@ -30,15 +31,22 @@ class App extends React.Component {
     });
   }
 
+  select(selectedVideo) {
+    this.setState({selectedVideo});
+  }
+
   render() {
-    const videoSearch = _.debounce((term) => {this.videoSearch(term)}, 300 )
+
+    const videoSearch = _.debounce((term) => {
+      this.videoSearch(term);
+    }, 300 );
 
     return (
       <div className='app-wrapper'>
         <SearchBar onSearchTermChange={videoSearch} />
         <VideoDetail video={this.state.selectedVideo}/>
         <VideoList
-          onVideoSelect={ (selectedVideo) => {this.setState({selectedVideo})} }
+          onVideoSelect={this.select}
           videos={this.state.videos} />
       </div>
     );
